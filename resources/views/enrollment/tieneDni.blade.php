@@ -6,6 +6,8 @@ Tenés DNI
 
 @section('content')
 
+<section id="tieneDni">
+  <div class="container">
 <h1>¿Tenés DNI argentino?</h1>
 <form method="post" enctype="multipart/form-data" action="{{ route('enrollment.tieneDni') }}">
     @csrf
@@ -23,4 +25,6 @@ Tenés DNI
     </div>
     
 </form>
+</div>
+</section>
 @endsection

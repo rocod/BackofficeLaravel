@@ -13,9 +13,9 @@ class EnrollmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function login()
     {
-        //
+         return view("login");
     }
 
     public function tieneDni(){

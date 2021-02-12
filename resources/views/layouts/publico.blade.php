@@ -12,31 +12,32 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">   
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">           
-                
-
-                
-            </div>
-        </nav>
-        <div class="container-fluid">
-            <header>
-                
-
-            </header>
-        <main class="py-4">
-           
-            @yield('content')
-        </main>
-    </div>  
+<body class="BGTurquesa">
+<header>
+  <div class="container-fluid">
+    <div class="row bgGrisHeader pb-2 ps-2 pe-2 pt-1">
+     <div class="col-lg-3  mt-2  col-sm-12 text-sm-center">
+      <img class="logoMinisterio" src="img/Logo-Ministerio-web.png" />
+     </div>
+      <div class="col-lg-2 text-end mt-1 offset-lg-7 col-sm-12 d-none d-md-block d-lg-block">
+      <img class="logoTM" src="img/TejiendoMatriaLogo.svg" />
+     </div>
     </div>
+  </div> 
+</header>
+    @yield('content')
+    </section>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="js/jquery-3.5.1.js"></script>
+<script src="js/bootstrap.js"></script>
 </body>
+
 </html>
