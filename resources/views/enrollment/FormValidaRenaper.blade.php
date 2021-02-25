@@ -5,7 +5,8 @@ Validación de Datos de DNI
 @endsection
 
 @section('content')
-
+<section id="FormValidaRenaper">
+  <div class="container">
 <h1>Registro Nacional de Promotorxs Territoriales de Género y Diversidad a Nivel Comunitario Tejiendo Matria</h1>
 <h2>Alta de Usuario</h2>
 <form method="post" enctype="multipart/form-data" action="{{ route('enrollment.verificarEnRenaper') }}">
@@ -24,4 +25,6 @@ Validación de Datos de DNI
     </div>
     
 </form>
+</div>
+</section>
 @endsection

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Enrollment;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;    
+use Illuminate\Support\Facades\Http;   
+use Illuminate\Support\Facades\DB; 
 
 class EnrollmentController extends Controller
 {
@@ -54,23 +56,68 @@ class EnrollmentController extends Controller
             $consultaM='https://apirenaper.idear.gov.ar/apidatos/porDniSexoTramite.php?dni='.$dni.'&sexo=M&idtramite='.$nroTramite;
             $response = Http::withToken($token)->get($consultaF);            
             $mensaje=json_decode($response->getBody()->getContents());
-            if($mensaje->codigo!=99){
+           
+             if($mensaje->codigo!=99){
+                 session()->flash('mensaje', 'Los datos ingresados no existen en el Registro Nacional de las Personas');
+                 return view("login");
 
-                $response = Http::withToken($token)->get($consultaM);            
-                $mensaje=json_decode($response->getBody()->getContents());
             }
-            if($mensaje->codigo!=99){
-                $mensaje="Los datos ingresados no pudieron ser verificados";
+            //$nombre=$mensaje->cuil;
+            //Consultamos en la base de datos local si existe la promotora
+            $usuario=DB::table('users') 
+            ->where('dni',$dni)->first();
+
+            if($usuario){
+               
+
+
+                //Si el usuario existe, vemos si ya tiene usuario crezdo
+                if($usuario->name!="" && $usuario->password!=""){
+
+                    session()->flash('mensaje', 'La persona consultada ya tiene un usuario creado,
+                    por favor haga click en olvide mi usuario y contraseña');
+                   
+                    return view("login");
+
+                }else{
+
+                  //  dd($usuario);
+
+                    return view("enrollment.AltaUsuario0")->with([
+                        'usuario'=>$usuario,
+                    ]);
+
+
+
+
+                }
+
+
+            }else{
+               
+                 session()->flash('mensaje', 'La persona no está registrada en la base de datos de promotores');
+              
+                return view("login");
             }
+
+
+
+            
+           
         }else{
-            $mensaje="No pudimos establecer la conexión para verificar sus datos";;
+            session()->flash('mensaje', 'No pudimos establecer la conexión para verificar sus datos');         
+            return view("login");
+
         }
 
-        //si codigo es 99 verificamos si esta en el padrón de promotorxs
+    }
 
-       
+    public function altaUsuario($usuario){
 
-        dd($mensaje);
+         $usu= User::findOrFail($usuario);
+        return view("enrollment.AltaUsuario1")->with([
+                        'usuario'=>$usu,
+                    ]);
 
     }
 
@@ -83,11 +130,13 @@ class EnrollmentController extends Controller
    
     public function sendToEMAIL(Request $request)
     {
-       //recibitmos los datos del form y los enivamos
-        //Mail::to('rominacodarin@gmail.com')->send(new TestMail("Hola"));
+       //recibimos los datos del form y los enivamos
+        Mail::to('rominacodarin@gmail.com')->send(new TestMail("Hola"));
 
       return view("enrollment.nonDniForm");
     }
+
+
 
     /**
      * Display the specified resource.

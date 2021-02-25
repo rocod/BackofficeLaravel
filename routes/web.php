@@ -7,7 +7,7 @@ Route::get('/', function () {
     return view('login');
 });
 
-Route::get('login', [EnrollmentController::class, 'login'])->name('login');
+Route::get('login2', [EnrollmentController::class, 'login'])->name('login2');
 
 Route::get('tieneDni', [EnrollmentController::class, 'tieneDni'])->name('enrollment.tieneDni');
 Route::post('tieneDni', [EnrollmentController::class, 'derivar'])->name('enrollment.derivar');
@@ -22,4 +22,9 @@ Route::get('nonDniForm', [EnrollmentController::class, 'nonDniForm'])->name('enr
 Route::post('sendToEMAIL', [EnrollmentController::class, 'sendToEMAIL'])->name('enrollment.sendToEMAIL');
 
 
+Route::get('altaUsuario/{usuario}', [EnrollmentController::class, 'altaUsuario'])->name('enrollment.altaUsuario');
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

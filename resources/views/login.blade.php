@@ -15,6 +15,12 @@ Login
            Territoriales de Género y Diversidad a Nivel
            Comunitario "Tejiendo Matria"
        </h2>
+       @if(session()->has('mensaje'))
+                <div class="alert alert-success">
+                    
+                    {{ session()->get('mensaje')}}
+                </div> 
+            @endif
        <div class="d-block d-sm-none mt-2">
          <img src="img/TejiendoMatriaMovil.svg" >
        </div>
