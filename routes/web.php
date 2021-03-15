@@ -24,6 +24,9 @@ Route::post('sendToEMAIL', [EnrollmentController::class, 'sendToEMAIL'])->name('
 
 Route::get('altaUsuario/{usuario}', [EnrollmentController::class, 'altaUsuario'])->name('enrollment.altaUsuario');
 
+Route::match(['put', 'patch'],'grabarUsuario/{id_promotorx}', [EnrollmentController::class, 'grabarUsuario'])->name('enrollment.grabarUsuario');
+
+Route::match(['put', 'patch'],'admin/servicios/{servicio}', 'ServiciosController@actualizar')->name('servicios.actualizar');
 
 Auth::routes();
 

@@ -10,25 +10,25 @@
     <title>@yield('titulo')</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('/js/app.js') }}" defer></script>
 
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">   
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
 </head>
 <body class="BGTurquesa">
 <header>
   <div class="container-fluid">
     <div class="row bgGrisHeader pb-2 ps-2 pe-2 pt-1">
      <div class="col-lg-3  mt-2  col-sm-12 text-sm-center">
-      <img class="logoMinisterio" src="img/Logo-Ministerio-web.png" />
+      <img class="logoMinisterio" src="/img/Logo-Ministerio-web.png" />
      </div>
       <div class="col-lg-2 text-end mt-1 offset-lg-7 col-sm-12 d-none d-md-block d-lg-block">
-      <img class="logoTM" src="img/TejiendoMatriaLogo.svg" />
+      <img class="logoTM" src="/img/TejiendoMatriaLogo.svg" />
      </div>
     </div>
   </div> 

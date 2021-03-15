@@ -9,6 +9,12 @@ Tenés DNI
 <section id="tieneDni">
   <div class="container">
 <h1>¿Tenés DNI argentino?</h1>
+@if(session()->has('mensaje'))
+                <div class="alert alert-success">
+                    
+                    {{ session()->get('mensaje')}}
+                </div> 
+            @endif
 <form method="post" enctype="multipart/form-data" action="{{ route('enrollment.tieneDni') }}">
     @csrf
     <div class="form-row">

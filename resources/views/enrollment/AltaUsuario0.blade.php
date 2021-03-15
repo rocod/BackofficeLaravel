@@ -15,10 +15,10 @@ Fecha de Nacimiento {{ $usuario->fecha_nacimiento }}</p>
 <p>Los datos son correctos?</p>
 <div class="row">
     <div class="col">
-        <a>No, son incorrectos</a>  
+        <a class="btn btn-danger">No, son incorrectos</a>  
     </div>
     <div class="col">
-    <a href="altaUsuario/{{ $usuario->id }}">Si, continuar</a>  
+    <a  class="btn btn-primary" href="/altaUsuario/{{ $usuario->id_promotorx }}">Si, continuar</a>  
     </div>
 </div>
 

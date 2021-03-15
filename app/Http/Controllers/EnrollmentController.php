@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;   
 use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
+
 
 class EnrollmentController extends Controller
 {
@@ -59,20 +62,25 @@ class EnrollmentController extends Controller
            
              if($mensaje->codigo!=99){
                  session()->flash('mensaje', 'Los datos ingresados no existen en el Registro Nacional de las Personas');
-                 return view("login");
+                 return view("enrollment.FormValidaRenaper");
 
             }
+            //dd($mensaje);
             //$nombre=$mensaje->cuil;
-            //Consultamos en la base de datos local si existe la promotora
-            $usuario=DB::table('users') 
-            ->where('dni',$dni)->first();
+            //Aquí debemos consultar si existe la promotora con el servicio de
+            //planificacion, si exite nos retorna un id_promotorx
+            $id_promotorx=2;// 
 
-            if($usuario){
-               
+            $usuario=DB::table('users')
+            ->where('id_promotorx',$id_promotorx)->first();
+
+            if($id_promotorx){               
 
 
                 //Si el usuario existe, vemos si ya tiene usuario crezdo
-                if($usuario->name!="" && $usuario->password!=""){
+                if($usuario){
+
+
 
                     session()->flash('mensaje', 'La persona consultada ya tiene un usuario creado,
                     por favor haga click en olvide mi usuario y contraseña');
@@ -80,9 +88,18 @@ class EnrollmentController extends Controller
                     return view("login");
 
                 }else{
+                    // cambiar el email por el que venga de la 
+                    //consulta a la base de datos
 
-                  //  dd($usuario);
-
+                 $usuario=new User;
+                 $usuario->nombre=$mensaje->nombres;
+                 $usuario->apellido=$mensaje->apellido;
+                 $usuario->email="rominacodarin@gmail.com";
+                 $usuario->dni=$dni;
+                 $usuario->cuil=$mensaje->cuil;
+                 $usuario->fecha_nacimiento=$mensaje->fecha_nacimiento;
+                 $usuario->id_promotorx=$id_promotorx;
+                 session(['usuario' => $usuario ]);
                     return view("enrollment.AltaUsuario0")->with([
                         'usuario'=>$usuario,
                     ]);
@@ -106,7 +123,7 @@ class EnrollmentController extends Controller
            
         }else{
             session()->flash('mensaje', 'No pudimos establecer la conexión para verificar sus datos');         
-            return view("login");
+            return view("enrollment.FormValidaRenaper");
 
         }
 
@@ -114,10 +131,17 @@ class EnrollmentController extends Controller
 
     public function altaUsuario($usuario){
 
-         $usu= User::findOrFail($usuario);
+        if(session('usuario')!=null){
+         $usu= session('usuario');
+        
         return view("enrollment.AltaUsuario1")->with([
                         'usuario'=>$usu,
                     ]);
+        }else{
+
+            return view("enrollment.FormValidaRenaper");
+
+        }
 
     }
 
@@ -127,59 +151,58 @@ class EnrollmentController extends Controller
         return view("enrollment.nonDniForm");
     }
 
+    public function grabarUsuario($id_promotorx)
+    {
+
+        if(request()->input('usuario')==request()->input('usuario2')){
+
+           $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+           $password = "";
+       
+           for($i=0;$i<10;$i++) {
+              //obtenemos un caracter aleatorio escogido de la cadena de caracteres
+              $password .= substr($str,rand(0,62),1);
+           }
+
+            $usuario=session('usuario');
+
+            $usu=DB::table('users')
+            ->where('email',$usuario->email)->first();
+
+               
+                $usuario->name=request()->input('usuario');
+                $usuario->password=$password;
+                $usuario->save();
+
+                //enviar email
+            Mail::to("rominacodarin@gmail.com")->send(new TestMail("Hola"));
+
+            return view("enrollment.ConfirmacionAltaUsuario")->with([
+                                'email'=>$usuario->email,
+                            ]);
+
+               
+
+            }else{
+            session()->flash('mensaje', 'Los campos de Usuario y Repetir Usuario no coinciden');
+             return view("enrollment.AltaUsuario1")->with(['usuario'=>session('usuario')]); 
+
+            }
+
+    }
+
    
     public function sendToEMAIL(Request $request)
     {
        //recibimos los datos del form y los enivamos
-        Mail::to('rominacodarin@gmail.com')->send(new TestMail("Hola"));
+    //    Mail::to('rominacodarin@gmail.com')->send(new TestMail("Hola"));
+        Mail::to('rominacodarin@gmail.com')->send(new OrderShipped("hola"));
 
       return view("enrollment.nonDniForm");
     }
 
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Enrollment  $enrollment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Enrollment $enrollment)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Enrollment  $enrollment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Enrollment $enrollment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Enrollment  $enrollment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Enrollment $enrollment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Enrollment  $enrollment
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Enrollment $enrollment)
-    {
-        //
-    }
+   
 }
