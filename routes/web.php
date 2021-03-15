@@ -7,6 +7,13 @@ Route::get('/', function () {
     return view('login');
 });
 
+Route::get('/clear-cache', function () {
+   echo Artisan::call('config:clear');
+   echo Artisan::call('config:cache');
+   echo Artisan::call('cache:clear');
+   echo Artisan::call('route:clear');
+});
+
 Route::get('login2', [EnrollmentController::class, 'login'])->name('login2');
 
 Route::get('tieneDni', [EnrollmentController::class, 'tieneDni'])->name('enrollment.tieneDni');
