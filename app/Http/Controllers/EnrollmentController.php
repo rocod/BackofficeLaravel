@@ -193,18 +193,33 @@ class EnrollmentController extends Controller
 
                         $usuario=session('usuario');
                         $usuario->name=request()->input('usuario');
-                        $usuario->password=Hash::make($password);
-                        $usuario->save();
-
                         $usuario->password=$password;
 
                         //enviar email
-                        
-                        Mail::to($usuario->email)->send(new envioEmail($usuario));
+                        try {
+                            
+                            Mail::to($usuario->email)->send(new envioEmail($usuario));
+                             $usuario->password=Hash::make($password);
+                             $usuario->save();
 
-                        return view("enrollment.ConfirmacionAltaUsuario")->with([
+                             return view("enrollment.ConfirmacionAltaUsuario")->with([
                                     'email'=>$usuario->email,
                                 ]);
+                             
+                        } catch (Exception $e) {
+
+                            report($e);
+                            session()->flash('mensaje', 'No pudimos enviar
+                                el email con la contraseña, intentelo nuevamente.');
+                        return view("enrollment.AltaUsuario1")->with(['usuario'=>session('usuario')]);  
+
+
+                        }
+                       
+
+                       
+
+                       
 
                
 
