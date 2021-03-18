@@ -11,10 +11,11 @@ Alta de usuario
 <h2>Alta de Usuario</h2>
 <p>Recordá que es fundamental contar con un E-mail válido para que te enviemos
 la contraseña provisoria. Si no contas con uno, crealo y escribinos
-a tejienomatria@mingeneros.gob.ar</p>
+a tejiendo@mingeneros.gob.ar</p>
 <p>{{ $usuario->nombre." ".$usuario->apellido}}<br>
 DNI {{$usuario->dni}}<br>
-Fecha de Nacimiento {{ $usuario->fecha_nacimiento }}</p>
+Fecha de Nacimiento {{ $usuario->fecha_nacimiento }}<br>
+E-mail: {{$usuario->email}}</p>
 @if(session()->has('mensaje'))
                 <div class="alert alert-success">
                     
@@ -25,15 +26,15 @@ Fecha de Nacimiento {{ $usuario->fecha_nacimiento }}</p>
 <form method="post" enctype="multipart/form-data" action="{{ route('enrollment.grabarUsuario', ['id_promotorx'=>$usuario->id_promotorx]) }}">
     @csrf
     @method('PUT')
-    <div class="form-row">
-       
+    <div class="form-row">       
         <input type="text" name="usuario" id="usuario" class="form-control"  value="{{ old('usuario') }}" placeholder="Ingresar Usuario"   required >
     </div>
     <div class="form-row">
         <label>Repetir Usuario</label>
        <input type="text" name="usuario2" id="usuario2" class="form-control"  value="{{ old('usuario2') }}" placeholder="Repetir Usuario"   required >
     </div>   
-    
+   
+   
     <div class="form-row">
         <button type="submit" class="btn btn-primary btn-lg">Confirmar</button>
     </div>

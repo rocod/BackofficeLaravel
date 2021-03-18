@@ -11,7 +11,8 @@ Alta de usuario
 <h2>Alta de Usuario</h2>
 <p>{{ $usuario->nombre." ".$usuario->apellido}}<br>
 DNI {{$usuario->dni}}<br>
-Fecha de Nacimiento {{ $usuario->fecha_nacimiento }}</p> 
+Fecha de Nacimiento {{ $usuario->fecha_nacimiento }}<br>
+E-mail: {{$usuario->email}} </p> 
 <p>Los datos son correctos?</p>
 <div class="row">
     <div class="col">

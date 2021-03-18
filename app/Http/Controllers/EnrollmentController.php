@@ -7,8 +7,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;   
 use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\TestMail;
+use App\Mail\envioEMail;
+
 
 
 class EnrollmentController extends Controller
@@ -153,41 +155,73 @@ class EnrollmentController extends Controller
 
     public function grabarUsuario($id_promotorx)
     {
+        if(session('usuario')!=null){
 
-        if(request()->input('usuario')==request()->input('usuario2')){
-
-           $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-           $password = "";
-       
-           for($i=0;$i<10;$i++) {
-              //obtenemos un caracter aleatorio escogido de la cadena de caracteres
-              $password .= substr($str,rand(0,62),1);
-           }
-
-            $usuario=session('usuario');
+            $usuario= session('usuario');
 
             $usu=DB::table('users')
             ->where('email',$usuario->email)->first();
 
-               
-                $usuario->name=request()->input('usuario');
-                $usuario->password=$password;
-                $usuario->save();
+            if($usu){
 
-                //enviar email
-            Mail::to("rominacodarin@gmail.com")->send(new TestMail("Hola"));
+                session()->flash('mensaje', 'El email ingresado ya esta registrado con otro usuario, utilizá uno distinto o escribinos a tejiendo@mingeneros.gob.ar');
+                return view("enrollment.AltaUsuario1")->with(['usuario'=>session('usuario')]); 
 
-            return view("enrollment.ConfirmacionAltaUsuario")->with([
-                                'email'=>$usuario->email,
-                            ]);
 
-               
 
             }else{
-            session()->flash('mensaje', 'Los campos de Usuario y Repetir Usuario no coinciden');
-             return view("enrollment.AltaUsuario1")->with(['usuario'=>session('usuario')]); 
+
+                $usu=DB::table('users')
+                ->where('name',request()->usuario)->first(); 
+
+                if($usu){
+
+                    session()->flash('mensaje', 'El usuario ya está en uso. Elija uno diferente');
+                    return view("enrollment.AltaUsuario1")->with(['usuario'=>session('usuario')]);
+
+                }else{ 
+
+                    if(request()->input('usuario')==request()->input('usuario2')){
+
+
+                        $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+                        $password = "";       
+                        for($i=0;$i<10;$i++) {
+                            //obtenemos un caracter aleatorio escogido de la cadena de caracteres
+                            $password .= substr($str,rand(0,62),1);
+                        }
+
+                        $usuario=session('usuario');
+                        $usuario->name=request()->input('usuario');
+                        $usuario->password=Hash::make($password);
+                        $usuario->save();
+
+                        $usuario->password=$password;
+
+                        //enviar email
+                        
+                        Mail::to($usuario->email)->send(new envioEmail($usuario));
+
+                        return view("enrollment.ConfirmacionAltaUsuario")->with([
+                                    'email'=>$usuario->email,
+                                ]);
+
+               
+
+                    }else{
+                        session()->flash('mensaje', 'Los campos de Usuario y Repetir Usuario no coinciden');
+                        return view("enrollment.AltaUsuario1")->with(['usuario'=>session('usuario')]);
+
+                }
 
             }
+
+        }//fin else if usuari
+
+        }else{// si no hay sesion vuelve ingresar dni y tramite
+
+            return view("enrollment.FormValidaRenaper");
+        }//fin else no tiene sesion    
 
     }
 
