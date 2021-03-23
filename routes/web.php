@@ -37,7 +37,9 @@ Route::get('altaUsuario/{usuario}', [EnrollmentController::class, 'altaUsuario']
 
 Route::match(['put', 'patch'],'grabarUsuario/{id_promotorx}', [EnrollmentController::class, 'grabarUsuario'])->name('enrollment.grabarUsuario');
 
-Route::match(['put', 'patch'],'admin/servicios/{servicio}', 'ServiciosController@actualizar')->name('servicios.actualizar');
+Route::match(['put', 'patch'],'login.primerIngreso/{id_usuarix}', [loginController::class, 'primerIngreso'])->name('login.primerIngreso');
+
+
 
 Route::post('login2', [LoginController::class, 'ingresar'])->name('login.login');
 

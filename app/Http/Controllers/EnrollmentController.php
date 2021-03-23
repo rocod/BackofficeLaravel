@@ -90,7 +90,7 @@ class EnrollmentController extends Controller
 
 
                 //Si el usuario existe, vemos si ya tiene usuario crezdo
-                if($usuario){
+                if($usuario && $usuario->fecha_pass_usuario!=null){
 
 
 
@@ -172,7 +172,7 @@ class EnrollmentController extends Controller
             $usu=DB::table('users')
             ->where('email',$usuario->email)->first();
 
-            if($usu){
+            if($usu && $usu->fecha_pass_usuario!=null){
 
                 session()->flash('mensaje', 'El email ingresado ya esta registrado con otro usuario, utilizá uno distinto o escribinos a tejiendo@mingeneros.gob.ar');
                 return view("enrollment.AltaUsuario1")->with(['usuario'=>session('usuario')]); 
@@ -184,7 +184,7 @@ class EnrollmentController extends Controller
                 $usu=DB::table('users')
                 ->where('name',request()->usuario)->first(); 
 
-                if($usu){
+                if($usu && $usu->fecha_pass_usuario!=null){
 
                     session()->flash('mensaje', 'El usuario ya está en uso. Elija uno diferente');
                     return view("enrollment.AltaUsuario1")->with(['usuario'=>session('usuario')]);
@@ -200,10 +200,16 @@ class EnrollmentController extends Controller
                             //obtenemos un caracter aleatorio escogido de la cadena de caracteres
                             $password .= substr($str,rand(0,62),1);
                         }
+                        $usu=DB::table('users')
+                        ->where('email',$usuario->email)->delete(); 
+
+                          
 
                         $usuario=session('usuario');
+                        
                         $usuario->name=request()->input('usuario');
                         $usuario->password=$password;
+
 
                         //enviar email
                         try {
@@ -211,6 +217,7 @@ class EnrollmentController extends Controller
                             Mail::to($usuario->email)->send(new envioEmail($usuario));
                              $usuario->password=Hash::make($password);
                              $usuario->save();
+
 
                              return view("enrollment.ConfirmacionAltaUsuario")->with([
                                     'email'=>$usuario->email,
@@ -245,6 +252,7 @@ class EnrollmentController extends Controller
 
         }else{// si no hay sesion vuelve ingresar dni y tramite
 
+            session()->flash('mensaje', 'Se produjo un error por favor iniciá el proceso nuevamente');
             return view("enrollment.FormValidaRenaper");
         }//fin else no tiene sesion    
 
