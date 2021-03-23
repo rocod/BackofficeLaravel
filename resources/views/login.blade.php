@@ -8,9 +8,15 @@ Login
 
 
 <section id="login">
+  <div class="position-left-hand-down"></div>
+  <div class="position-right-hand-down"></div>
  <div class="container-fluid ">
-   <div class="row FondLineaslogin manitosArriba">
-     <div class="col-lg-6 offset-lg-3 col-sm-4 offset-sm-4 text-center ">
+      <!-- en el de abajo saco las clases y creo dos nuevas 
+     (una para cada div de adentro)-->
+    <div class="position-left-hand-up"></div>
+    <div class="position-right-hand-up"></div>
+   <div class="content-body">
+     <div class="title-body">
        <h2 class="subT2 colorBlanco mt-3">Registro Nacional de Promotoras y Promotores
            Territoriales de Género y Diversidad a Nivel
            Comunitario "Tejiendo Matria"
