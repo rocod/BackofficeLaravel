@@ -25,6 +25,16 @@ class EnrollmentController extends Controller
          return view("login");
     }
 
+    public function prueba(){
+
+         $usu=DB::table('users')
+            ->where('name','rcodarin')->first();
+
+        // $hash=Hash::make("hola");
+         $password=Hash::check('gRgQ7cEReF',  $usu->password);
+         dd($password);
+    }
+
     public function tieneDni(){
         return view("enrollment.tieneDni");
     }
@@ -241,14 +251,18 @@ class EnrollmentController extends Controller
     }
 
    
-    public function sendToEMAIL(Request $request)
-    {
-       //recibimos los datos del form y los enivamos
-    //    Mail::to('rominacodarin@gmail.com')->send(new TestMail("Hola"));
-        Mail::to('rominacodarin@gmail.com')->send(new OrderShipped("hola"));
+    public function ingresar(){
 
-      return view("enrollment.nonDniForm");
+        $pass=Hash::make(request()->input('password'));
+
+        $usu=DB::table('users')
+        ->where('password',$pass)
+        ->where('name',request()->input('name'))->first();
+        $usuarios=$usu=DB::table('users')->get();
+            dd($usuarios);
     }
+
+
 
 
 

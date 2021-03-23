@@ -1,7 +1,7 @@
 @extends('layouts.publico')
 
 @section('titulo')
-Login
+Ingreso a Tejiendo Matria
 @endsection
 
 @section('content')
@@ -29,12 +29,13 @@ Login
    </div>
    <div class="row">
       <div class="col-lg-4 offset-lg-4 mt-3 text-center ">
-        <form>
+        <form method="post" action="{{ route('login.login') }}">
+          @csrf
           <div class="mb-3">            
             <input type="text" class="form-control textoInput" id="usuario" name="usuario" required placeholder="Ingresá tu usuario">           
           </div>
           <div class="mb-3 mt-4">          
-            <input type="password" class="form-control textoInput input2" required placeholder="Ingresá tu contraseña">
+            <input type="password" class="form-control textoInput input2" required placeholder="Ingresá tu contraseña" name="password" id="password">
             <label class="form-check-label olvide mt-1"><a href="#">Olvidé Mi Usuario y/o Contraseña</a></label>
           </div>   
           <!--<div class="g-recaptcha" data-sitekey="6LdRS0EaAAAAANebsnYsfeQ6PDyvpFef9FBo3jNn"></div>  -->              
