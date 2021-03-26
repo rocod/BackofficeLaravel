@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -58,6 +59,8 @@ class LoginController extends Controller
 
             
             session(['usuario' => $usu ]);
+
+           Log::channel('slack')->info('Something happened!');
 
 
 

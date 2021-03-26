@@ -36,7 +36,7 @@ Ingreso a Tejiendo Matria
           </div>
           <div class="mb-3 mt-4">          
             <input type="password" class="form-control textoInput input2" required placeholder="Ingresá tu contraseña" name="password" id="password">
-            <label class="form-check-label olvide mt-1"><a href="#">Olvidé Mi Usuario y/o Contraseña</a></label>
+            <label class="form-check-label olvide mt-1"><a href="{{ route('FormOlvidePass') }}">Olvidé Mi Usuario y/o Contraseña</a></label>
           </div>   
           <!--<div class="g-recaptcha" data-sitekey="6LdRS0EaAAAAANebsnYsfeQ6PDyvpFef9FBo3jNn"></div>  -->              
           <button type="submit" class="btn btn-primary entrar">ENTRAR</button>

@@ -9,6 +9,13 @@ Registro al sitio
     <div class="container">
 <h1>Registro al sitio</h1>
 <p>Recordá que es fundamental contar con un Mail Válido para el envío de la contraseña provisoria. si no contás con uno aún crealo y volvé a ingresar.</p>
+@if(session()->has('mensaje'))
+                <div class="alert alert-success">
+                    
+                    {{ session()->get('mensaje')}}
+                </div> 
+            @endif 
+
 <form method="post" enctype="multipart/form-data" action="{{ route('enrollment.sendToEMAIL') }}">
     @csrf
     <div class="form-row">
@@ -23,7 +30,7 @@ Registro al sitio
     </div>
     <div class="form-row">
         <label>Provincia</label>
-       <select class="form-control">
+       <select class="form-control" name="provincia">
           <option value="CABA">CABA</option>
           <option value="GBA">GBA</option>  
           <option value="Buenos Aires">Bs. As.</option>
@@ -53,8 +60,12 @@ Registro al sitio
     </div>   
     <div class="form-row">
         <label>Organización en la que participas</label>
-            <input type="text" name="or" id="nombre" class="form-control"  required >
+            <input type="text" name="organizacion" id="organizacion" class="form-control"  required >
     </div>
+    <div class="col-lg-6">
+            <label>Email de contacto</label>
+            <input type="email" name="email" id="email" class="form-control"    required >
+        </div>
     
     <div class="form-row">
         <button type="submit" class="btn btn-primary btn-lg">CONTINUAR</button>

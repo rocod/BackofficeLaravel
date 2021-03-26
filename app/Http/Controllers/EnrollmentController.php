@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\envioEMail;
+use App\Mail\enviarFormuSinDNI;
 
 
 
@@ -268,6 +269,144 @@ class EnrollmentController extends Controller
         ->where('name',request()->input('name'))->first();
         $usuarios=$usu=DB::table('users')->get();
             dd($usuarios);
+    }
+
+    public function FormOlvidePass(){
+
+        return view("enrollment.FormOlvidePass");
+    }
+
+    public function recuperoPass(){
+
+        //cuando tengamos acceso al servicio de promotorxs verificar que 
+        //existen los datos de nombre y apellido
+
+      $usuario=\App\Models\User::where('email',request()->input('email'))->first();
+
+
+        if($usuario){
+
+        $verificar=Hash::check(request()->input('password'),  $usuario->password);
+        
+        if($verificar){
+
+            return view('enrollment.CrearNuevoUsuario')->with(['usuario'=>$usuario]);
+        }    
+
+        $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        $password = "";       
+        for($i=0;$i<10;$i++) {
+            //obtenemos un caracter aleatorio escogido de la cadena de caracteres
+            $password .= substr($str,rand(0,62),1);
+        }
+
+         
+        
+         $usuario->fecha_pass_usuario=null; 
+        // dd($usuario);
+         $usuario->password=Hash::make($password); 
+         $usuario->save();
+         $usuario->password=$password;
+         $usuario->nombres=request()->input('nombre');
+
+         
+        //enviar email
+        try {
+            
+            Mail::to($usuario->email)->send(new envioEmail($usuario));
+             
+
+
+             return view("enrollment.ConfirmacionCambioPass")->with([
+                    'email'=>$usuario->email,
+                ]);
+             
+        } catch (Exception $e) {
+
+            report($e);
+            session()->flash('mensaje', 'No pudimos enviar
+                el email con la contraseña, intentelo nuevamente.');
+        return view("enrollment.AltaUsuario1")->with(['usuario'=>session('usuario')]);  
+
+
+        }
+
+
+        }else{ //fin if se encontro al usuario
+
+              session()->flash('mensaje', 'Los datos no coinciden con los de unx promotorx registrado, por favor envianos un email contando el problema a tejiendo@mingeneros.gob.ar');
+              return view("FormOlvidePass"); 
+
+
+        }//fin else no se encontro al usuario
+    }
+
+     public function grabarUsuarioNuevo($id_usuarix)
+    {
+       
+        $usuario=User::find($id_usuarix);
+       
+
+          
+        $usu=DB::table('users')
+        ->where('name',request()->usuario)->first(); 
+
+                if($usu && $usu->fecha_pass_usuario!=null){
+
+                    session()->flash('mensaje', 'El usuario ya está en uso. Elija uno diferente');
+                    return view("enrollment.CrearNuevoUsuario")->with(['usuario'=>$usuario]);
+
+                }else{ 
+
+                    if(request()->input('usuario')==request()->input('usuario2')){
+
+
+                        
+                        $usuario->name=request()->input('usuario');
+                        $usuario->save();
+
+                         return view("enrollment.ConfirmacionAltaUsuarioNuevo");
+               
+
+                    }else{
+                        session()->flash('mensaje', 'Los campos de Usuario y Repetir Usuario no coinciden');
+                        return view("enrollment.CrearNuevoUsuario")->with(['usuario'=>$usuario]);
+
+                }
+
+            }
+
+        
+
+        
+
+    }
+
+    public function sendToEmail(){
+
+        $nombre=request()->input('nombre');
+        $apellido=request()->input('apellido');
+        $provincia=request()->input('provincia');
+        $organizacion=request()->input('organizacion');
+        $email=request()->input('email');
+   
+
+       try {
+            
+            Mail::to('rominacodarin@gmail.com')->send(new enviarFormuSinDNI($nombre, $apellido, $provincia, $organizacion, $email));             
+
+                session()->flash('mensaje', 'Recibimos su solicitud de creación de usuarix. Te contactaremos a la brevedad');
+             return view("Login");
+             
+        } catch (Exception $e) {
+
+            report($e);
+            session()->flash('mensaje', 'No pudimos enviar
+                la solicitud de creación de usuario, intentelo nuevamente.');
+        return view("enrollment.nonDniForm");  
+
+
+        }
     }
 
 
