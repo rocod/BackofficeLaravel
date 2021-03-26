@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EnrollmentController;
-use App\Http\Controllers\Auth\LoginController;
 
 Route::get('/', function () {
     return view('login');
@@ -22,9 +21,6 @@ Route::post('tieneDni', [EnrollmentController::class, 'derivar'])->name('enrollm
 
 Route::get('FormValidaRenaper', [EnrollmentController::class, 'FormValidaRenaper'])->name('FormValidaRenaper');
 
-Route::get('prueba', [EnrollmentController::class, 'prueba'])->name('prueba');
-
-
 Route::post('FormValidaRenaper', [EnrollmentController::class, 'verificarEnRenaper'])->name('enrollment.verificarEnRenaper');
 
 
@@ -37,14 +33,7 @@ Route::get('altaUsuario/{usuario}', [EnrollmentController::class, 'altaUsuario']
 
 Route::match(['put', 'patch'],'grabarUsuario/{id_promotorx}', [EnrollmentController::class, 'grabarUsuario'])->name('enrollment.grabarUsuario');
 
-Route::match(['put', 'patch'],'login.primerIngreso/{id_usuarix}', [loginController::class, 'primerIngreso'])->name('login.primerIngreso');
-
-Route::get('FormOlvidePass/', [EnrollmentController::class, 'formOlvidePass'])->name('FormOlvidePass');
-Route::post('recuperoPass/', [EnrollmentController::class, 'recuperoPass'])->name('recuperoPass');
-Route::match(['put', 'patch'],'grabarUsuarioNuevo/{id_usuarix}', [EnrollmentController::class, 'grabarUsuarioNuevo'])->name('enrollment.grabarUsuarioNuevo');
-
-Route::post('login2', [LoginController::class, 'ingresar'])->name('login.login');
-
+Route::match(['put', 'patch'],'admin/servicios/{servicio}', 'ServiciosController@actualizar')->name('servicios.actualizar');
 
 Auth::routes();
 
