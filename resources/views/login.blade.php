@@ -8,15 +8,10 @@ Ingreso a Tejiendo Matria
 
 
 <section id="login">
-  <div class="position-left-hand-down"></div>
-  <div class="position-right-hand-down"></div>
  <div class="container-fluid ">
-      <!-- en el de abajo saco las clases y creo dos nuevas 
-     (una para cada div de adentro)-->
-    <div class="position-left-hand-up"></div>
-    <div class="position-right-hand-up"></div>
    <div class="content-body">
-     <div class="title-body">
+      <div class="position-left-hand-up"></div>
+      <div class="title-body">
        <h2 class="subT2 colorBlanco mt-3">Registro Nacional de Promotoras y Promotores
            Territoriales de Género y Diversidad a Nivel
            Comunitario "Tejiendo Matria"
@@ -27,11 +22,11 @@ Ingreso a Tejiendo Matria
                     {{ session()->get('mensaje')}}
                 </div> 
             @endif
-       <div class="d-block d-sm-none mt-2">
-         <img src="img/TejiendoMatriaMovil.svg" >
-       </div>
+        <div class="tm-logo-D-hidden">
+        </div>
        <p class="parrafoSubti colorBlanco pt-3 d-none d-sm-block">Ingreso al sitio</p>
-     </div>
+      </div>
+      <div class="position-right-hand-up"></div>
    </div>
    <div class="row">
       <div class="col-lg-4 offset-lg-4 mt-3 text-center ">
@@ -52,9 +47,12 @@ Ingreso a Tejiendo Matria
    <div class="row fondo_manos">
       <div class="col-lg-4 offset-lg-4 mt-1 text-center ">
         <p class="parrafoPrimeraVez colorBlanco pt-3">¿Es la primera vez que accedés?</p>
-        <div class="btn btn-primary crearUsuario"><a href="{{ route('enrollment.tieneDni') }}">CREAR USUARIO</a></div>
+        <div class="btn btn-primary crearUsuario"><a class="font-color-register-button" href="{{ route('enrollment.tieneDni') }}">CREAR USUARIO</a></div>
       </div>
    </div>     
  </div> 
-
+<div class="content-bg-hands">
+  <div class="position-left-hand-down"></div>
+  <div class="position-right-hand-down"></div>
+</div>
 @endsection
