@@ -14,14 +14,14 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
+        /*DB::table('users')->insert([
         'name'=>'',
         'email'=>'',
         'password'=>'',	  
         'id_promotorx'=>1,    
             	
 
-        ]);
+        ]);*/
         //
     }
 }

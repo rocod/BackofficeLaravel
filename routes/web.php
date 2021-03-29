@@ -46,6 +46,6 @@ Route::match(['put', 'patch'],'grabarUsuarioNuevo/{id_usuarix}', [EnrollmentCont
 Route::post('login2', [LoginController::class, 'ingresar'])->name('login.login');
 
 
-Auth::routes();
+//Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

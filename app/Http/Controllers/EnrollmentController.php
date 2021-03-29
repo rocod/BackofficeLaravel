@@ -82,7 +82,10 @@ class EnrollmentController extends Controller
             //$nombre=$mensaje->cuil;
             //Aquí debemos consultar si existe la promotora con el servicio de
             //planificacion, si exite nos retorna un id_promotorx
-            $id_promotorx=2;// 
+            $promotorx=DB::table('promotorxes')
+            ->where('dni', $dni)->first();
+
+            $id_promotorx=$promotorx->id;// 
 
             $usuario=DB::table('users')
             ->where('id_promotorx',$id_promotorx)->first();
