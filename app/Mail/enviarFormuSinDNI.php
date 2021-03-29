@@ -35,6 +35,7 @@ class enviarFormuSinDNI extends Mailable
      */
     public function build()
     {
+      $this->subject("Solicitud de Creación de Usuario sin DNI");
         return $this->view('mail.envioFormSinDNI');
     }
 }

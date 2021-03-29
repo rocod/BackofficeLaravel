@@ -31,6 +31,7 @@ class envioEmail extends Mailable
      */
     public function build()
     {
+         $this->subject("Envío de Contraseña provisoria");
         return $this->view('mail.envioPass')->with(['usuario'=>$this->user]);
     }
 }
